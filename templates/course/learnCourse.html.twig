@@ -1,0 +1,101 @@
+{# templates/course/learnCourse.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Learn {{ course.courseName }}{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/learnCourse.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==
+    " crossorigin="anonymous" referrerpolicy="no-referrer" />
+{% endblock %}
+
+{% block body %}
+    <div class="learn-course-container">
+        <h1>{{ course.courseName }}</h1>
+        {% if course.image %}
+            <img src="data:image/jpeg;base64,{{ course.image }}" alt="{{ course.courseName }}">
+        {% endif %}
+        <p>{{ course.description }}</p>
+        <div class="learn-course-content">
+            {{ course.text|raw }}
+        </div>
+
+        <form id="ratingForm">
+            <label for="rating">Rate this course:</label><br>
+            {% for i in 1..5 %}
+                <input type="radio" id="rating{{ i }}" name="rating" value="{{i}}">
+                <label for="rating{{ i }}">{{ i }}/5 <i class="fa-regular fa-star"></i></label><br>
+            {% endfor %}
+            <button type="submit">Submit</button>
+        </form>
+
+        <a href="{{ path('course_index') }}" class="back-link">Back to courses</a>
+    </div>
+
+   <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const ratingForm = document.getElementById('ratingForm');
+        if (!ratingForm) {
+            console.error('Rating form not found');
+            return;
+        }
+
+        ratingForm.addEventListener('submit', function (event) {
+            event.preventDefault();
+            console.log('Form submitted');
+
+            // Extract form data
+            const formData = new FormData(this);
+            const rating = formData.get('rating');
+            const courseId = parseInt({{ course.id|json_encode }}); // Safely render course.id
+            const csrfToken = '{{ csrf_token("rate_course") }}';
+
+            console.log('Form data:', { rating, courseId, csrfToken });
+
+            // Send the request
+            fetch('{{ path('course_rate') }}', {
+                method: 'POST',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams({
+                    'courseId': courseId,
+                    'rating': rating,
+                    '_csrf_token': csrfToken
+                })
+            })
+            .then(response => {
+                console.log('Raw response:', response);
+                if (!response.ok) {
+                    console.error('Response status:', response.status);
+                    console.error('Response status text:', response.statusText);
+                    throw new Error('Network response was not ok');
+                }
+                return response.text(); // Log raw response for debugging
+            })
+            .then(text => {
+                console.log('Response text:', text);
+                try {
+                    const data = JSON.parse(text); // Parse JSON from response
+                    console.log('Parsed data:', data);
+
+                    if (data.status === 'success') {
+                        alert(data.message);
+                    } else {
+                        alert('Error saving rating: ' + data.message);
+                    }
+                } catch (error) {
+                    console.error('Error parsing JSON:', error, 'Response text:', text);
+                    alert('An unexpected error occurred');
+                }
+            })
+            .catch(error => {
+                console.error('Network error:', error);
+                alert('An error occurred while saving the rating: ' + error.message);
+            });
+        });
+    });
+</script>
+    
+{% endblock %}

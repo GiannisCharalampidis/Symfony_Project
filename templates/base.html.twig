@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Welcome!{% endblock %}</title>
+    {% block stylesheets %}
+    {% endblock %}
+</head>
+<body>
+    {# <nav>
+        <ul>
+            <li><a href="{{ path('course_index') }}">Home</a></li>
+            <li><a href="{{ path('course_category', {category: 'programming'}) }}">Programming Courses</a></li>
+            <li><a href="{{ path('course_category', {category: 'design'}) }}">Design Courses</a></li>
+            <li><a href="{{ path('course_category', {category: 'marketing'}) }}">Marketing Courses</a></li>
+        </ul>
+    </nav> #}
+
+    {% for label, messages in app.flashes %}
+        <div class="flash-{{ label }}" style="display: none;">
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        </div>
+    {% endfor %}
+
+    {% block body %}{% endblock %}
+    {% block javascripts %}
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const flashMessages = document.querySelectorAll('.flash-success p, .flash-error p');
+                flashMessages.forEach(function(message) {
+                    alert(message.textContent);
+                });
+            });
+        </script>
+    {% endblock %}
+</body>
+</html>

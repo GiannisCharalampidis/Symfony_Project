@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Your Courses</title>
+    <link rel="stylesheet" href="{{ asset('css/purchasedCourses.css') }}">
+</head>
+<body>
+    <header>
+            <nav>
+                <ul>
+                    <li><a href="{{ path('course_index') }}">Home</a></li>
+                    <li><a href="{{ path('course_category', {category: 'programming'}) }}">Programming Courses</a></li>
+                    <li><a href="{{ path('course_category', {category: 'design'}) }}">Design Courses</a></li>
+                    <li><a href="{{ path('course_category', {category: 'marketing'}) }}">Marketing Courses</a></li>
+                </ul>
+            </nav>
+
+        </header>
+    <div class="auth-buttons">
+        <a href="{{ path('app_logout') }}">Sign Out</a>
+    </div>
+    <h1>Your Courses</h1>
+
+    {% if purchasedCourses is empty %}
+        <p>You have not purchased any courses yet.</p>
+    {% else %}
+        <ul>
+            {% for purchasedCourse in purchasedCourses %}
+            <div class = "course-container">
+                    <h2>{{ purchasedCourse.courseName }}</h2>
+                    <p>{{ purchasedCourse.description }}</p>
+                    {% if purchasedCourse.image %}
+                        <img src="data:image/jpeg;base64,{{ purchasedCourse.image }}" alt="{{ purchasedCourse.courseName }} " class="image">
+                    {% endif %}
+                    <p>Purchased on: {{ purchasedCourse.purchaseDate|date('Y-m-d H:i') }}</p>
+                    <a href="{{ path('learn_course', {id: purchasedCourse.course.id}) }}" class="start-learning">Start Learning</a>
+            </div>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</body>
+</html>

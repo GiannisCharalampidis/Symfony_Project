@@ -1,0 +1,95 @@
+.course-details-container {
+    width: 40vw;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    font-size: large;
+
+}
+
+.course-details-container h1 {
+    font-size: 3em;
+    margin-bottom: 20px;
+    font-variant: small-caps;
+}
+
+.course-details-container p {
+    font-size: large;
+    line-height: 1.6;
+    font-variant: small-caps;
+
+}
+
+.course-details-container img {
+    max-width: 30vw;
+    height: 30vh;
+    margin: 20px 0;
+    border-radius: 10px;
+}
+
+.course-price {
+    font-weight: bold;
+    margin-top: 20px;
+    font-size: large;
+}
+
+.buttons-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.purchase-button {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 25px;
+    text-align: center;
+    font-weight: 500;
+    font-size: large;
+}
+
+.back-link {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #616060;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 25px;
+    text-align: center;
+    font-weight: 500;
+    font-size: large;
+
+}
+
+.purchase-button {
+    border: none;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.purchase-button:hover, .back-link:hover {
+    background-color: #0056b3;
+    font-weight: 500;
+}
+
+.start-learning {
+    border-radius: 25px;
+    color: white;
+    background-color: #353434;
+    padding: 8px;
+    text-decoration: none;
+}
+
+.start-learning:hover {
+    background-color: #ffffff;
+    color: #1d1d1d;
+    font-style: italic;
+    font-weight: bold;
+}

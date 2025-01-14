@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ course.courseName }}{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/courseDetails.css') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="course-details-container">
+        <h1>{{ course.courseName }}</h1>
+        {% if course.image %}
+            <img src="data:image/jpeg;base64,{{ course.image }}" alt="{{ course.courseName }}">
+        {% endif %}
+        <p>{{ course.description }}</p
+        <p class="course-price">Price: ${{ course.price }}</p>
+        <a href="{{ path('course_index') }}" class="back-link">Back to courses</a>
+        
+        {% if app.user and not hasPurchased %}
+            <form action="{{ path('purchase_course', {id: course.id}) }}" method="post">
+                <button type="submit" class="purchase-button">Purchase</button>
+            </form>
+        {% elseif app.user and hasPurchased %}
+            <p>You have already purchased this course.</p> <a href="{{ path('learn_course', {id: course.id}) }}" class="start-learning">Start Learning</a>
+        {% else %}
+            <a href="{{ path('app_login') }}" class="purchase-button">Login to Purchase</a>
+        {% endif %}
+    </div>
+{% endblock %}

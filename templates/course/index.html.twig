@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Course Index</title>
+    <link rel="stylesheet" href="{{ asset('css/index.css') }}">
+</head>
+<body>
+        <header>
+            <nav>
+                <ul>
+                    <li><a href="{{ path('course_index') }}">Home</a></li>
+                    <li><a href="{{ path('course_category', {category: 'programming'}) }}">Programming Courses</a></li>
+                    <li><a href="{{ path('course_category', {category: 'design'}) }}">Design Courses</a></li>
+                    <li><a href="{{ path('course_category', {category: 'marketing'}) }}">Marketing Courses</a></li>
+                </ul>
+            
+             {% if not app.user %}
+                <div class="auth-buttons">
+                    <a href="{{ path('app_login') }}">Sign In</a>
+                    <a href="{{ path('app_register') }}">Sign Up</a>
+                </div>
+            {% else %}
+                <div class="auth-buttons">
+                    <a href="{{ path('app_logout') }}">Sign Out</a>
+                </div>
+                </header>
+                {% if isAdmin %}
+                    <p class='par1'>Welcome, {{ app.user.username }}! &nbsp;&nbsp; <a href="{{ path('admin_add_course') }}" class='purchasedBtn'>Add a new course</a>
+                    <a href="{{ path('user_purchased_courses') }}" class='purchasedBtn'>Your Purchased Courses</a></p>
+                {% else %}
+                    <p class='par1'>Welcome, {{ app.user.username }}! &nbsp;&nbsp; <a href="{{ path('user_purchased_courses') }}" class='purchasedBtn'>Your Purchased Courses</a></p>
+                {% endif %}
+            {% endif %}
+            </nav>
+
+        </header>
+
+        <h1 class='availableCourses'>AVAILABLE COURSES</h1>
+
+         <div class="courses-container">
+            {% for course in courses %}
+                <div class="course-item">
+                    <h2>{{ course.courseName }}</h2>
+                    {% if course.image %}
+                        <img src="data:image/jpeg;base64,{{ course.image }}" alt="{{ course.courseName }}">
+                    {% endif %}
+                    <div class="course-rating">
+                        <h3>Average Rating: 
+                            {% if course.averageRating is not null %}
+                                {{ course.averageRating|number_format(1) }}/5
+                            {% else %}
+                                Not rated yet
+                            {% endif %}
+                        </h3>
+                    </div>
+                    <a href="{{ path('course_details', {id: course.id}) }}">Read more</a>
+                </div>
+            {% else %}
+                <p class='availableCourses2'>No courses available at the moment.</p>
+            {% endfor %}
+        </div>
+
+
+</body>
+</html>
