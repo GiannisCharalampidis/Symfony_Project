@@ -35,7 +35,6 @@ class CourseController extends AbstractController
                 $image = stream_get_contents($image);
             }
             
-            // Encode to base64 for display in Twig
             return [
                 'id' => $course->getId(),
                 'courseName' => $course->getCourseName(),
@@ -123,8 +122,7 @@ class CourseController extends AbstractController
         if (is_resource($image)) {
             $image = stream_get_contents($image);
         }
-
-        // Encode to base64 for display in Twig
+    
         $courseData = [
             'id' => $course->getId(),
             'courseName' => $course->getCourseName(),
@@ -220,7 +218,6 @@ class CourseController extends AbstractController
                 $image = stream_get_contents($image);
             }
 
-            // Calculate average rating
             $courseRatings = $em->getRepository(CourseRating::class)->findBy(['course' => $course]);
             $averageRating = null;
             if ($courseRatings) {
@@ -230,7 +227,6 @@ class CourseController extends AbstractController
                 $averageRating = array_sum($ratings) / count($ratings);
             }
 
-            // Encode to base64 for display in Twig
             return [
                 'id' => $course->getId(),
                 'courseName' => $course->getCourseName(),
@@ -260,10 +256,8 @@ class CourseController extends AbstractController
         $courseId = (int) $request->request->get('courseId');
         $ratingValue = (int) $request->request->get('rating');
 
-        // Log the received data
         error_log("Received courseId: $courseId, rating: $ratingValue");
 
-        // Find the course by ID
         $course = $entityManager->getRepository(Course::class)->find($courseId);
 
         $user = $this->getUser();
@@ -285,18 +279,15 @@ class CourseController extends AbstractController
 
         try{
             if ($existingRating) {
-                // Update the existing rating
                 $existingRating->setRating($ratingValue);
                 $entityManager->flush();
                 return new JsonResponse(['status' => 'success', 'message' => 'Rating updated']);
             } else {
-            // Create a new CourseRating entity
             $rating = new CourseRating();
             $rating->setRating((int)$ratingValue);
             $rating->setUser($user);
             $rating->setCourse($course);
 
-            // Save the rating
             $entityManager->persist($rating);
             $entityManager->flush();
 

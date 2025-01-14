@@ -43,7 +43,6 @@ class LoginAuthenticator extends AbstractLoginFormAuthenticator
             return new RedirectResponse($targetPath);
         }
 
-        // For example, redirect to the 'home' route
         return new RedirectResponse($this->router->generate('course_index'));
     }
 

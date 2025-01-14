@@ -7,15 +7,6 @@
     {% endblock %}
 </head>
 <body>
-    {# <nav>
-        <ul>
-            <li><a href="{{ path('course_index') }}">Home</a></li>
-            <li><a href="{{ path('course_category', {category: 'programming'}) }}">Programming Courses</a></li>
-            <li><a href="{{ path('course_category', {category: 'design'}) }}">Design Courses</a></li>
-            <li><a href="{{ path('course_category', {category: 'marketing'}) }}">Marketing Courses</a></li>
-        </ul>
-    </nav> #}
-
     {% for label, messages in app.flashes %}
         <div class="flash-{{ label }}" style="display: none;">
             {% for message in messages %}

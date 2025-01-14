@@ -44,15 +44,13 @@
             event.preventDefault();
             console.log('Form submitted');
 
-            // Extract form data
             const formData = new FormData(this);
             const rating = formData.get('rating');
-            const courseId = parseInt({{ course.id|json_encode }}); // Safely render course.id
+            const courseId = parseInt({{ course.id|json_encode }});
             const csrfToken = '{{ csrf_token("rate_course") }}';
 
             console.log('Form data:', { rating, courseId, csrfToken });
 
-            // Send the request
             fetch('{{ path('course_rate') }}', {
                 method: 'POST',
                 headers: {
@@ -72,7 +70,7 @@
                     console.error('Response status text:', response.statusText);
                     throw new Error('Network response was not ok');
                 }
-                return response.text(); // Log raw response for debugging
+                return response.text();
             })
             .then(text => {
                 console.log('Response text:', text);
